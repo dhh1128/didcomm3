@@ -19,11 +19,10 @@
 # Change the file extension to match the format (.xml for XML, etc...)
 #
 ###
-title: "TODO - Your title"
-abbrev: "TODO - Abbreviation"
+title: "DIDComm3"
 category: info
 
-docname: draft-todo-yourname-protocol-latest
+docname: draft-dhardman-didcomm3-latest
 submissiontype: IETF  # also: "independent", "IAB", or "IRTF"
 number:
 date:
