@@ -1,0 +1,181 @@
+
+
+
+
+Network Working Group                                         D. Hardman
+Internet-Draft                                            Provenant, Inc
+Intended status: Informational                            11 August 2022
+Expires: 12 February 2023
+
+
+                                DIDComm3
+                     draft-dhardman-didcomm3-latest
+
+Abstract
+
+   DIDComm3 lets two or more peers securely exchange messages in a
+   highly decentralized fashion.  Strong privacy guarantees are
+   achievable.  Messages can build threads and rich, application-level
+   protocols.  Unlike many secure chat technologies, no servers, APIs,
+   web hooks, API keys, or similar client-server constructs are
+   required.  Offline is a first-class mode.  Messages can flow over any
+   transport or combination of transports, and security is portable to
+   arbitrary contexts.
+
+About This Document
+
+   This note is to be removed before publishing as an RFC.
+
+   The latest revision of this draft can be found at
+   https://dhh1128.github.io/didcomm3/draft-dhardman-didcomm3.html.
+   Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-dhardman-didcomm3/.
+
+   Source for this draft and an issue tracker can be found at
+   https://github.com/dhh1128/didcomm3.
+
+Status of This Memo
+
+   This Internet-Draft is submitted in full conformance with the
+   provisions of BCP 78 and BCP 79.
+
+   Internet-Drafts are working documents of the Internet Engineering
+   Task Force (IETF).  Note that other groups may also distribute
+   working documents as Internet-Drafts.  The list of current Internet-
+   Drafts is at https://datatracker.ietf.org/drafts/current/.
+
+   Internet-Drafts are draft documents valid for a maximum of six months
+   and may be updated, replaced, or obsoleted by other documents at any
+   time.  It is inappropriate to use Internet-Drafts as reference
+   material or to cite them other than as "work in progress."
+
+   This Internet-Draft will expire on 12 February 2023.
+
+Copyright Notice
+
+   Copyright (c) 2022 IETF Trust and the persons identified as the
+   document authors.  All rights reserved.
+
+   This document is subject to BCP 78 and the IETF Trust's Legal
+   Provisions Relating to IETF Documents (https://trustee.ietf.org/
+   license-info) in effect on the date of publication of this document.
+   Please review these documents carefully, as they describe your rights
+   and restrictions with respect to this document.  Code Components
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Conventions and Definitions
+   3.  Security Considerations
+   4.  IANA Considerations
+   5.  Normative References
+   Acknowledgments
+   Author's Address
+
+1.  Introduction
+
+   DIDComm3 (hereafter, just "DIDComm") specifies how peer groups can
+   leverage the cryptographic properties of DIDs and similar identifiers
+   to securely exchange messages.  Such exchanges can use any
+   combination of transports -- HTTP, WebSockets, SSE, email, Bluetooth,
+   NFC, LoRa, QR codes, message queues, radio broadcast, sneakernet, the
+   file system...
+
+   Of course, robust mechanisms for secure communication already exist.
+   However, most rely on key registries, identity providers, certificate
+   authorities, browser or app vendors, or similar centralizations.
+   Many also assume a single transport, making it difficult to use the
+   same solution for human and machine conversations, online and
+   offline, simplex and duplex, across a broad set of modalities.  And
+   most existing options are siloed -- messages must flow within the
+   ecosystem provided by a single vendor or community, or else the
+   security context is reset.  You can't start a conversation on secure
+   chat, and continue it on email or a VOIP call, without
+   reauthenticating (often based on a different method and different
+   secrets).
+
+   DIDComm fixes this.
+
+   Some secure communications technologies deliberately treat higher-
+   level constructs as out of scope.  TLS is an example: having
+   guaranteed the cryptographic integrity of a session, its mandate ends
+   with the movement of arbitrary bytes.  This is wonderfully general-
+   purpose, but it means that every higher-level protocol has to re-
+   invent login, timeouts, error handling, and so forth.
+
+   Other secure communication technologies are tightly bound to a
+   specific set of higher-level behaviors.  Signal's protocol may be
+   capable of flexible use, but in practice it is only applied to the
+   problems of VOIP and unstructured messaging.  Making payments,
+   booking a vacation, or applying for a loan don't fit atop the Signal
+   foundation, unless done by humans on a phone call or a chat client.
+
+   DIDComm fixes this, too.
+
+   DIDComm's posture on higher-level constructs is the best of both
+   worlds.  It moves messages, not arbitrary bytes, and it specifies how
+   messages are encapsulated in envelopes, how they are typed and
+   versioned, how they are associated with threads and protocol
+   instances, how timeouts and ACKs work, and how errors can be raised
+   and recognized.  But message content can match any schema a developer
+   imagines.  This lets developers build arbitrary higher-level
+   protocols atop DIDComm, but frees them to focus on just the unique
+   problem domain of those protocols.  It also unlocks powerful
+   composability.  Any number of DIDComm protocols can run at a single
+   endpoint.  Each has an independent state; each is discoverable; each
+   can be connected to others in flexible ways.  Because the security
+   and privacy features are part of a common foundation, rich workflows
+   can combine them without creating seams an attacker can exploit.  And
+   such workflows can easily and safely cross back and forth between the
+   previously siloed worlds of humans and automation.
+
+   The unintended consequence of existing secure communications
+   technologies is to perpetuate an asymmetry between institutions and
+   ordinary people.  The former maintain certificates and always-
+   connected servers, and publish APIs under terms and conditions they
+   dictate; the latter suffer with usernames and passwords, poor
+   interoperability, and a Hobson's choice between privacy and
+   convenience.  But with DIDComm, individuals on semi-connected mobile
+   devices become full peers of highly available web servers operated by
+   IT experts.  Registration is self-service, intermediaries require
+   little trust, and terms and conditions can come from any party.
+
+2.  Conventions and Definitions
+
+   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
+   "OPTIONAL" in this document are to be interpreted as described in
+   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
+   capitals, as shown here.
+
+3.  Security Considerations
+
+   TODO Security
+
+4.  IANA Considerations
+
+   This document has no IANA actions.
+
+5.  Normative References
+
+   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
+              Requirement Levels", BCP 14, RFC 2119,
+              DOI 10.17487/RFC2119, March 1997,
+              <https://www.rfc-editor.org/rfc/rfc2119>.
+
+   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
+              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
+              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+
+Acknowledgments
+
+   TODO acknowledge.
+
+Author's Address
+
+   Daniel Hardman
+   Provenant, Inc
+   Email: daniel.hardman@gmail.com
