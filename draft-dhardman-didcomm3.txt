@@ -141,7 +141,9 @@ Table of Contents
    convenience.  But with DIDComm, individuals on semi-connected mobile
    devices become full peers of highly available web servers operated by
    IT experts.  Registration is self-service, intermediaries require
-   little trust, and terms and conditions can come from any party.
+   little trust, and terms and conditions can come from any party.  And
+   all of this is portable to whatever tools and transports happen to be
+   convenient.
 
 2.  Conventions and Definitions
 
