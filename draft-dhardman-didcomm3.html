@@ -7,9 +7,9 @@
 <title>DIDComm3</title>
 <meta content="Daniel Hardman" name="author">
 <meta content="
-       DIDComm3 lets two or more peers securely exchange messages in a highly decentralized fashion. Strong privacy guarantees are achievable. Messages can build threads and rich, application-level protocols. Unlike many secure chat technologies, no servers, APIs, web hooks, API keys, or similar client-server constructs are required. Offline is a first-class mode. Messages can flow over any transport or combination of transports, and security is portable to arbitrary contexts. 
+       Decentralized Identifier Communication (DIDComm) lets two or more peers securely conduct cryptographically robust, message-based interactions in a highly decentralized fashion. Strong privacy guarantees are achievable. Messages can build threads and rich, application-level protocols. Unlike many secure chat technologies, no servers, APIs, web hooks, API keys, or similar client-server constructs are required. Offline is a first-class mode. Messages can flow over any transport or combination of transports, and security is portable to arbitrary contexts, including ones that do not understand DIDComm. 
     " name="description">
-<meta content="xml2rfc 3.13.1" name="generator">
+<meta content="xml2rfc 3.14.2" name="generator">
 <meta content="decentralization" name="keyword">
 <meta content="ssi" name="keyword">
 <meta content="self-sovereign identity" name="keyword">
@@ -18,7 +18,7 @@
 <meta content="web5" name="keyword">
 <meta content="draft-dhardman-didcomm3-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.13.1
+  xml2rfc 3.14.2
     Python 3.10.5
     appdirs 1.4.4
     ConfigArgParse 1.5.3
@@ -30,7 +30,6 @@
     lxml 4.9.1
     MarkupSafe 2.1.1
     pycountry 22.3.5
-    pyflakes 2.4.0
     PyYAML 6.0
     requests 2.27.1
     setuptools 59.4.0
@@ -371,23 +370,37 @@ ul.empty li, .ulEmpty li {
 
 /* definition lists */
 dl {
+  clear: left;
+  --indent: 3ch;
+  /* --indent: attr(indent ch); not supported in any browser, but we can dream */
 }
 dl > dt {
   float: left;
   margin-right: 1em;
+  min-width: 20ch;
+}
+dl.dlNewline > dt {
+  float: none;
 }
 dl > dd {
   margin-bottom: .8em;
-  min-height: 1.3em;
+  margin-left: var(--indent) !important; /* stupid element overrides */
+  min-height: 2ex;
 }
 :is(dl.compact, .dlCompact) > dd {
-  margin-bottom: 0em;
+  margin-bottom: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:first-child, .break:first-child + *) {
+  margin-top: 0;
+}
+:is(dl.compact, .dlCompact) > dd > :is(:last-child) {
+  margin-bottom: 0;
 }
 dl > dd > dl {
   margin-top: 0.5em;
-  margin-bottom: 0em;
+  margin-bottom: 0;
 }
-dd.break {
+dl .break {
   display: none;
 }
 
@@ -582,17 +595,18 @@ hr {
   margin: 0;
   font-size: var(--small-font-size);
   line-height: 18px;
-  --identifier-width: 8em;
+  --identifier-width: 15ch;
 }
 #identifiers dt {
   width: var(--identifier-width);
-  margin: 0;
+  min-width: var(--identifier-width);
   clear: left;
   float: left;
   text-align: right;
 }
 #identifiers dd {
-  margin: 0 0 0 calc(1em + var(--identifier-width));
+  margin: 0;
+  margin-left: calc(1em + var(--identifier-width)) !important;
   min-width: 5em;
 }
 #identifiers .authors .author {
@@ -648,7 +662,7 @@ hr {
   margin: 0 10px 0 -25px;
 }
 .references dd {
-  margin-left: 8em;
+  margin-left: 8em !important;
   overflow: auto;
 }
 
@@ -915,16 +929,6 @@ a.toplink {
   margin: 8px 0.5em 0;
 }
 
-/* Fix the dl styling to match the RFC 7992 attributes */
-dl > dt,
-dl.dlParallel > dt {
-  float: left;
-  margin-right: 1em;
-}
-dl.dlNewline > dt {
-  float: none;
-}
-
 /* Provide styling for table cell text alignment */
 table .text-left {
   text-align: left;
@@ -1036,11 +1040,11 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">DIDComm3</td>
-<td class="right">August 2022</td>
+<td class="right">September 2022</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Hardman</td>
-<td class="center">Expires 12 February 2023</td>
+<td class="center">Expires 11 March 2023</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1053,12 +1057,12 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-dhardman-didcomm3-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-08-11" class="published">11 August 2022</time>
+<time datetime="2022-09-07" class="published">7 September 2022</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Informational</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2023-02-12">12 February 2023</time></dd>
+<dd class="expires"><time datetime="2023-03-11">11 March 2023</time></dd>
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
@@ -1071,7 +1075,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <h1 id="title">DIDComm3</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">DIDComm3 lets two or more peers securely exchange messages in a highly decentralized fashion. Strong privacy guarantees are achievable. Messages can build threads and rich, application-level protocols. Unlike many secure chat technologies, no servers, APIs, web hooks, API keys, or similar client-server constructs are required. Offline is a first-class mode. Messages can flow over any transport or combination of transports, and security is portable to arbitrary contexts.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">Decentralized Identifier Communication (DIDComm) lets two or more peers securely conduct cryptographically robust, message-based interactions in a highly decentralized fashion. Strong privacy guarantees are achievable. Messages can build threads and rich, application-level protocols. Unlike many secure chat technologies, no servers, APIs, web hooks, API keys, or similar client-server constructs are required. Offline is a first-class mode. Messages can flow over any transport or combination of transports, and security is portable to arbitrary contexts, including ones that do not understand DIDComm.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1103,7 +1107,7 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 12 February 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 March 2023.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1134,18 +1138,39 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 <nav class="toc"><ul class="compact toc ulBare ulEmpty">
 <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-problem-domain" class="xref">Problem Domain</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.1.2.2">
+                <p id="section-toc.1-1.1.2.2.1" class="keepWithNext"><a href="#section-1.2" class="xref">1.2</a>.  <a href="#name-related-technologies" class="xref">Related Technologies</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2">
-            <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-definitions" class="xref">Conventions and Definitions</a></p>
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-conventions-and-definitions" class="xref">Conventions and Definitions</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-terms" class="xref">Terms</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="xref">3</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-references" class="xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.1">
+                <p id="section-toc.1-1.5.2.1.1"><a href="#section-5.1" class="xref">5.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5.2.2">
+                <p id="section-toc.1-1.5.2.2.1"><a href="#section-5.2" class="xref">5.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
+</li>
+            </ul>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="xref"></a><a href="#name-acknowledgments" class="xref">Acknowledgments</a></p>
@@ -1162,14 +1187,30 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">DIDComm3 (hereafter, just "DIDComm") specifies how peer groups can leverage the cryptographic properties of DIDs and similar identifiers to securely exchange messages. Such exchanges can use any combination of transports -- HTTP, WebSockets, SSE, email, Bluetooth, NFC, LoRa, QR codes, message queues, radio broadcast, sneakernet, the file system...<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">Of course, robust mechanisms for secure communication already exist. However, most rely on key registries, identity providers, certificate authorities, browser or app vendors, or similar centralizations. Many also assume a single transport, making it difficult to use the same solution for human and machine conversations, online and offline, simplex and duplex, across a broad set of modalities. And most existing options are siloed -- messages must flow within the ecosystem provided by a single vendor or community, or else the security context is reset. You can't start a conversation on secure chat, and continue it on email or a VOIP call, without reauthenticating (often based on a different method and different secrets).<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">DIDComm fixes this.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">Some secure communications technologies deliberately treat higher-level constructs as out of scope. TLS is an example: having guaranteed the cryptographic integrity of a session, its mandate ends with the movement of arbitrary bytes. This is wonderfully general-purpose, but it means that every higher-level protocol has to re-invent login, timeouts, error handling, and so forth.<a href="#section-1-4" class="pilcrow">¶</a></p>
-<p id="section-1-5">Other secure communication technologies are tightly bound to a specific set of higher-level behaviors. Signal's protocol may be capable of flexible use, but in practice it is only applied to the problems of VOIP and unstructured messaging. Making payments, booking a vacation, or applying for a loan don't fit atop the Signal foundation, unless done by humans on a phone call or a chat client.<a href="#section-1-5" class="pilcrow">¶</a></p>
-<p id="section-1-6">DIDComm fixes this, too.<a href="#section-1-6" class="pilcrow">¶</a></p>
-<p id="section-1-7">DIDComm's posture on higher-level constructs is the best of both worlds. It moves messages, not arbitrary bytes, and it specifies how messages are encapsulated in envelopes, how they are typed and versioned, how they are associated with threads and protocol instances, how timeouts and ACKs work, and how errors can be raised and recognized. But message content can match any schema a developer imagines. This lets developers build arbitrary higher-level protocols atop DIDComm, but frees them to focus on just the unique problem domain of those protocols. It also unlocks powerful composability. Any number of DIDComm protocols can run at a single endpoint. Each has an independent state; each is discoverable; each can be connected to others in flexible ways. Because the security and privacy features are part of a common foundation, rich workflows can combine them without creating seams an attacker can exploit. And such workflows can easily and safely cross back and forth between the previously siloed worlds of humans and automation.<a href="#section-1-7" class="pilcrow">¶</a></p>
-<p id="section-1-8">The unintended consequence of existing secure communications technologies is to perpetuate an asymmetry between institutions and ordinary people. The former maintain certificates and always-connected servers, and publish APIs under terms and conditions they dictate; the latter suffer with usernames and passwords, poor interoperability, and a Hobson's choice between privacy and convenience. But with DIDComm, individuals on semi-connected mobile devices become full peers of highly available web servers operated by IT experts. Registration is self-service, intermediaries require little trust, and terms and conditions can come from any party. And all of this is portable to whatever tools and transports happen to be convenient.<a href="#section-1-8" class="pilcrow">¶</a></p>
+<div id="problem-domain">
+<section id="section-1.1">
+        <h3 id="name-problem-domain">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-problem-domain" class="section-name selfRef">Problem Domain</a>
+        </h3>
+<p id="section-1.1-1">Decentralized Identifier Communication ("DIDComm") specifies how peer groups can leverage the cryptographic properties of DIDs and similar identifiers to securely exchange messages. Such exchanges can use any combination of transports -- HTTP, WebSockets, SSE, email, Bluetooth, NFC, LoRa, QR codes, message queues, radio broadcast, sneakernet, the file system...<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+<p id="section-1.1-2">Of course, robust mechanisms for secure communication already exist. However, most rely on key registries, identity providers, certificate authorities, browser or app vendors, or similar centralizations. Many also assume a single transport, making it difficult to use the same solution for both human and machine conversations, online and offline, simplex and duplex, across a broad set of modalities. And most existing options are siloed -- messages must flow within the ecosystem provided by a single vendor or community, or else the security context is reset. You can't start a conversation on secure chat, and continue it on email or a VOIP call, without reauthenticating (often based on a different method and different secrets).<a href="#section-1.1-2" class="pilcrow">¶</a></p>
+<p id="section-1.1-3">DIDComm fixes this.<a href="#section-1.1-3" class="pilcrow">¶</a></p>
+<p id="section-1.1-4">Some secure communications technologies deliberately treat higher-level constructs as out of scope. TLS is an example: having guaranteed the cryptographic integrity of a session, its mandate ends with the movement of arbitrary bytes. This is wonderfully general-purpose, but it means that every higher-level protocol has to re-invent login, timeouts, error handling, and so forth.<a href="#section-1.1-4" class="pilcrow">¶</a></p>
+<p id="section-1.1-5">Other secure communication technologies are tightly bound to a specific set of higher-level behaviors. Signal's protocol may be capable of flexible use, but in practice it is only applied to the problems of VOIP and unstructured messaging. Making payments, booking a vacation, or applying for a loan don't fit in an obvious way atop the Signal foundation, unless done by humans on a phone call or a chat client.<a href="#section-1.1-5" class="pilcrow">¶</a></p>
+<p id="section-1.1-6">DIDComm fixes this, too.<a href="#section-1.1-6" class="pilcrow">¶</a></p>
+<p id="section-1.1-7">DIDComm's posture on higher-level constructs is the best of both worlds. It moves messages, not arbitrary bytes, and it specifies how messages are encapsulated in envelopes, how they are typed and versioned, how they are associated with threads and protocol instances, how timeouts and ACKs work, and how errors can be raised and recognized. But message content can match any schema a developer imagines. This lets developers build arbitrary higher-level protocols atop DIDComm, but frees them to focus on just the unique problem domain of those protocols. It also unlocks powerful composability. Any number of DIDComm protocols can run at a single endpoint. Each has an independent state; each is discoverable; each can be connected to others in flexible ways. Because the security and privacy features are part of a common foundation, rich workflows can combine them without creating seams for an attacker to exploit. And such workflows can easily and safely cross back and forth between the previously siloed worlds of humans and automation.<a href="#section-1.1-7" class="pilcrow">¶</a></p>
+<p id="section-1.1-8">The unintended consequence of existing secure communications technologies is to perpetuate an asymmetry between institutions and ordinary people. The former maintain certificates and always-connected servers, and publish APIs under terms and conditions they dictate; the latter suffer with usernames and passwords, poor interoperability, and a Hobson's choice between privacy and convenience. But with DIDComm, there is no distinction between clients and servers. Individuals on semi-connected mobile devices become full peers of highly available web servers operated by IT experts. Registration is self-service, intermediaries require little trust, and terms and conditions can come from any party. And all of this is portable to whatever tools and transports happen to be convenient.<a href="#section-1.1-8" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="related-technologies">
+<section id="section-1.2">
+        <h3 id="name-related-technologies">
+<a href="#section-1.2" class="section-number selfRef">1.2. </a><a href="#name-related-technologies" class="section-name selfRef">Related Technologies</a>
+        </h3>
+<p id="section-1.2-1">This document embodies the third generation of DIDComm, and may thus be described as "DIDComm v3" if it is helpful to disambiguate. It is substantially similar to its predecessors <span>[<a href="#DIDComm1" class="xref">DIDComm1</a>]</span> and <span>[<a href="#DIDComm2" class="xref">DIDComm2</a>]</span> in intent and core concepts, but compatibility across versions is not an explicit goal of this document, and is explicitly out of scope here.<a href="#section-1.2-1" class="pilcrow">¶</a></p>
+<p id="section-1.2-2">As used here, "decentralized identifier" matches the term in the identifier ontology from <span>[<a href="#ToIPArch" class="xref">ToIPArch</a>]</span>. It thus encompasses the definition in the W3C's DID spec <span>[<a href="#DID" class="xref">DID</a>]</span>, but also AIDs from <span>[<a href="#KERI" class="xref">KERI</a>]</span> and potentially other decentralized identity schemes such as <span>[<a href="#RFC9039" class="xref">RFC9039</a>]</span>.<a href="#section-1.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
 </section>
 </div>
 <div id="conventions-and-definitions">
@@ -1181,6 +1222,13 @@ svg :is([stroke="fill"], [fill^="#fff"]) {
 "<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
 described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they
 appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="terms">
+<section id="section-2.1">
+        <h3 id="name-terms">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-terms" class="section-name selfRef">Terms</a>
+      </h3>
+</section>
+</div>
 </section>
 </div>
 <div id="security-considerations">
@@ -1200,26 +1248,94 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 </section>
 </div>
 <section id="section-5">
-      <h2 id="name-normative-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+      <h2 id="name-references">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<section id="section-5.1">
+        <h3 id="name-normative-references">
+<a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
+<dt id="DID">[DID]</dt>
+        <dd>
+<span class="refTitle">"Decentralized Identifiers (DIDs) v1.0: Core architecture, data model, and representations"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.w3.org/TR/did-core/">https://www.w3.org/TR/did-core/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
-      <dd>
+        <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
-    <dd>
+      <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
+<section id="section-5.2">
+        <h3 id="name-informative-references">
+<a href="#section-5.2" class="section-number selfRef">5.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="Base58Check">[Base58Check]</dt>
+        <dd>
+<span class="refTitle">"Base58Check Encoding"</span>, <span>n.d.</span>, <span>&lt;<a href="https://en.bitcoin.it/wiki/Base58Check_encoding">https://en.bitcoin.it/wiki/Base58Check_encoding</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="CBOR">[CBOR]</dt>
+        <dd>
+<span class="refTitle">"CBOR Mapping Object Codes"</span>, <span>n.d.</span>, <span>&lt;<a href="https://en.wikipedia.org/wiki/CBOR">https://en.wikipedia.org/wiki/CBOR</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DIDComm1">[DIDComm1]</dt>
+        <dd>
+<span class="refTitle">"Aries RFC 0005: DID Communication"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0005-didcomm/README.md">https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0005-didcomm/README.md</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="DIDComm2">[DIDComm2]</dt>
+        <dd>
+<span class="refTitle">"DIDComm Messaging"</span>, <span>n.d.</span>, <span>&lt;<a href="https://identity.foundation/didcomm-messaging/spec/">https://identity.foundation/didcomm-messaging/spec/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="IPFS">[IPFS]</dt>
+        <dd>
+<span class="refTitle">"IPFS MultiFormats"</span>, <span>n.d.</span>, <span>&lt;<a href="https://richardschneider.github.io/net-ipfs-core/api/Ipfs.Registry.HashingAlgorithm.html">https://richardschneider.github.io/net-ipfs-core/api/Ipfs.Registry.HashingAlgorithm.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="JSON">[JSON]</dt>
+        <dd>
+<span class="refTitle">"JavaScript Object Notation Delimiters"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.json.org/json-en.html">https://www.json.org/json-en.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="KERI">[KERI]</dt>
+        <dd>
+<span class="refAuthor">Smith, S.</span>, <span class="refTitle">"Key Event Receipt Infrastructure (KERI)"</span>, <span>n.d.</span>, <span>&lt;<a href="https://arxiv.org/abs/1907.02143">https://arxiv.org/abs/1907.02143</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="MGPK">[MGPK]</dt>
+        <dd>
+<span class="refTitle">"Msgpack Mapping Object Codes"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/msgpack/msgpack/blob/master/spec.md">https://github.com/msgpack/msgpack/blob/master/spec.md</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="NaCL">[NaCL]</dt>
+        <dd>
+<span class="refTitle">"NaCl Networking and Cryptography library"</span>, <span>n.d.</span>, <span>&lt;<a href="https://nacl.cr.yp.to">https://nacl.cr.yp.to</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC4627">[RFC4627]</dt>
+        <dd>
+<span class="refTitle">"The application/json Media Type for JavaScript Object Notation (JSON)"</span>, <span>n.d.</span>, <span>&lt;<a href="https://datatracker.ietf.org/doc/rfc4627/">https://datatracker.ietf.org/doc/rfc4627/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8949">[RFC8949]</dt>
+        <dd>
+<span class="refAuthor">Bormann, C.</span> and <span class="refAuthor">P. Hoffman</span>, <span class="refTitle">"Concise Binary Object Representation (CBOR)"</span>, <span class="seriesInfo">STD 94</span>, <span class="seriesInfo">RFC 8949</span>, <span class="seriesInfo">DOI 10.17487/RFC8949</span>, <time datetime="2020-12" class="refDate">December 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8949">https://www.rfc-editor.org/rfc/rfc8949</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9039">[RFC9039]</dt>
+        <dd>
+<span class="refTitle">"Uniform Resource Names for Device Identifiers"</span>, <span>n.d.</span>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9039.html">https://www.rfc-editor.org/rfc/rfc9039.html</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="ToIPArch">[ToIPArch]</dt>
+      <dd>
+<span class="refTitle">"Trust over IP (ToIP) Technology Architecture Specification"</span>, <span>n.d.</span>, <span>&lt;<a href="https://github.com/trustoverip/TechArch/blob/main/spec.md">https://github.com/trustoverip/TechArch/blob/main/spec.md</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
 </section>
 <div id="acknowledgments">
 <section id="appendix-A">
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">This version of DIDComm builds on <span>[<a href="#DIDComm2" class="xref">DIDComm2</a>]</span>, incubated at DIF, and <span>[<a href="#DIDComm1" class="xref">DIDComm1</a>]</span>, incubated at Hyperledger. Each of those efforts had many contributors. Thank you, everyone! Some portions of the explanatory text in this document is paraphrased or copied from those earlier specs (under their respective Apache 2 licenses).<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">

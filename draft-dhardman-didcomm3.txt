@@ -4,8 +4,8 @@
 
 Network Working Group                                         D. Hardman
 Internet-Draft                                            Provenant, Inc
-Intended status: Informational                            11 August 2022
-Expires: 12 February 2023
+Intended status: Informational                          7 September 2022
+Expires: 11 March 2023
 
 
                                 DIDComm3
@@ -13,14 +13,16 @@ Expires: 12 February 2023
 
 Abstract
 
-   DIDComm3 lets two or more peers securely exchange messages in a
-   highly decentralized fashion.  Strong privacy guarantees are
-   achievable.  Messages can build threads and rich, application-level
-   protocols.  Unlike many secure chat technologies, no servers, APIs,
-   web hooks, API keys, or similar client-server constructs are
-   required.  Offline is a first-class mode.  Messages can flow over any
-   transport or combination of transports, and security is portable to
-   arbitrary contexts.
+   Decentralized Identifier Communication (DIDComm) lets two or more
+   peers securely conduct cryptographically robust, message-based
+   interactions in a highly decentralized fashion.  Strong privacy
+   guarantees are achievable.  Messages can build threads and rich,
+   application-level protocols.  Unlike many secure chat technologies,
+   no servers, APIs, web hooks, API keys, or similar client-server
+   constructs are required.  Offline is a first-class mode.  Messages
+   can flow over any transport or combination of transports, and
+   security is portable to arbitrary contexts, including ones that do
+   not understand DIDComm.
 
 About This Document
 
@@ -49,7 +51,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 February 2023.
+   This Internet-Draft will expire on 11 March 2023.
 
 Copyright Notice
 
@@ -68,27 +70,34 @@ Copyright Notice
 Table of Contents
 
    1.  Introduction
+     1.1.  Problem Domain
+     1.2.  Related Technologies
    2.  Conventions and Definitions
+     2.1.  Terms
    3.  Security Considerations
    4.  IANA Considerations
-   5.  Normative References
+   5.  References
+     5.1.  Normative References
+     5.2.  Informative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
 
-   DIDComm3 (hereafter, just "DIDComm") specifies how peer groups can
-   leverage the cryptographic properties of DIDs and similar identifiers
-   to securely exchange messages.  Such exchanges can use any
-   combination of transports -- HTTP, WebSockets, SSE, email, Bluetooth,
-   NFC, LoRa, QR codes, message queues, radio broadcast, sneakernet, the
-   file system...
+1.1.  Problem Domain
+
+   Decentralized Identifier Communication ("DIDComm") specifies how peer
+   groups can leverage the cryptographic properties of DIDs and similar
+   identifiers to securely exchange messages.  Such exchanges can use
+   any combination of transports -- HTTP, WebSockets, SSE, email,
+   Bluetooth, NFC, LoRa, QR codes, message queues, radio broadcast,
+   sneakernet, the file system...
 
    Of course, robust mechanisms for secure communication already exist.
    However, most rely on key registries, identity providers, certificate
    authorities, browser or app vendors, or similar centralizations.
    Many also assume a single transport, making it difficult to use the
-   same solution for human and machine conversations, online and
+   same solution for both human and machine conversations, online and
    offline, simplex and duplex, across a broad set of modalities.  And
    most existing options are siloed -- messages must flow within the
    ecosystem provided by a single vendor or community, or else the
@@ -110,8 +119,9 @@ Table of Contents
    specific set of higher-level behaviors.  Signal's protocol may be
    capable of flexible use, but in practice it is only applied to the
    problems of VOIP and unstructured messaging.  Making payments,
-   booking a vacation, or applying for a loan don't fit atop the Signal
-   foundation, unless done by humans on a phone call or a chat client.
+   booking a vacation, or applying for a loan don't fit in an obvious
+   way atop the Signal foundation, unless done by humans on a phone call
+   or a chat client.
 
    DIDComm fixes this, too.
 
@@ -128,9 +138,9 @@ Table of Contents
    endpoint.  Each has an independent state; each is discoverable; each
    can be connected to others in flexible ways.  Because the security
    and privacy features are part of a common foundation, rich workflows
-   can combine them without creating seams an attacker can exploit.  And
-   such workflows can easily and safely cross back and forth between the
-   previously siloed worlds of humans and automation.
+   can combine them without creating seams for an attacker to exploit.
+   And such workflows can easily and safely cross back and forth between
+   the previously siloed worlds of humans and automation.
 
    The unintended consequence of existing secure communications
    technologies is to perpetuate an asymmetry between institutions and
@@ -138,12 +148,27 @@ Table of Contents
    connected servers, and publish APIs under terms and conditions they
    dictate; the latter suffer with usernames and passwords, poor
    interoperability, and a Hobson's choice between privacy and
-   convenience.  But with DIDComm, individuals on semi-connected mobile
-   devices become full peers of highly available web servers operated by
-   IT experts.  Registration is self-service, intermediaries require
-   little trust, and terms and conditions can come from any party.  And
-   all of this is portable to whatever tools and transports happen to be
+   convenience.  But with DIDComm, there is no distinction between
+   clients and servers.  Individuals on semi-connected mobile devices
+   become full peers of highly available web servers operated by IT
+   experts.  Registration is self-service, intermediaries require little
+   trust, and terms and conditions can come from any party.  And all of
+   this is portable to whatever tools and transports happen to be
    convenient.
+
+1.2.  Related Technologies
+
+   This document embodies the third generation of DIDComm, and may thus
+   be described as "DIDComm v3" if it is helpful to disambiguate.  It is
+   substantially similar to its predecessors [DIDComm1] and [DIDComm2]
+   in intent and core concepts, but compatibility across versions is not
+   an explicit goal of this document, and is explicitly out of scope
+   here.
+
+   As used here, "decentralized identifier" matches the term in the
+   identifier ontology from [ToIPArch].  It thus encompasses the
+   definition in the W3C's DID spec [DID], but also AIDs from [KERI] and
+   potentially other decentralized identity schemes such as [RFC9039].
 
 2.  Conventions and Definitions
 
@@ -153,6 +178,8 @@ Table of Contents
    BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
    capitals, as shown here.
 
+2.1.  Terms
+
 3.  Security Considerations
 
    TODO Security
@@ -161,7 +188,13 @@ Table of Contents
 
    This document has no IANA actions.
 
-5.  Normative References
+5.  References
+
+5.1.  Normative References
+
+   [DID]      "Decentralized Identifiers (DIDs) v1.0: Core architecture,
+              data model, and representations", n.d.,
+              <https://www.w3.org/TR/did-core/>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
@@ -172,9 +205,62 @@ Table of Contents
               2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
               May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
 
+5.2.  Informative References
+
+   [Base58Check]
+              "Base58Check Encoding", n.d.,
+              <https://en.bitcoin.it/wiki/Base58Check_encoding>.
+
+   [CBOR]     "CBOR Mapping Object Codes", n.d.,
+              <https://en.wikipedia.org/wiki/CBOR>.
+
+   [DIDComm1] "Aries RFC 0005: DID Communication", n.d.,
+              <https://github.com/hyperledger/aries-rfcs/blob/main/
+              concepts/0005-didcomm/README.md>.
+
+   [DIDComm2] "DIDComm Messaging", n.d.,
+              <https://identity.foundation/didcomm-messaging/spec/>.
+
+   [IPFS]     "IPFS MultiFormats", n.d.,
+              <https://richardschneider.github.io/net-ipfs-core/api/
+              Ipfs.Registry.HashingAlgorithm.html>.
+
+   [JSON]     "JavaScript Object Notation Delimiters", n.d.,
+              <https://www.json.org/json-en.html>.
+
+   [KERI]     Smith, S., "Key Event Receipt Infrastructure (KERI)",
+              n.d., <https://arxiv.org/abs/1907.02143>.
+
+   [MGPK]     "Msgpack Mapping Object Codes", n.d.,
+              <https://github.com/msgpack/msgpack/blob/master/spec.md>.
+
+   [NaCL]     "NaCl Networking and Cryptography library", n.d.,
+              <https://nacl.cr.yp.to>.
+
+   [RFC4627]  "The application/json Media Type for JavaScript Object
+              Notation (JSON)", n.d.,
+              <https://datatracker.ietf.org/doc/rfc4627/>.
+
+   [RFC8949]  Bormann, C. and P. Hoffman, "Concise Binary Object
+              Representation (CBOR)", STD 94, RFC 8949,
+              DOI 10.17487/RFC8949, December 2020,
+              <https://www.rfc-editor.org/rfc/rfc8949>.
+
+   [RFC9039]  "Uniform Resource Names for Device Identifiers", n.d.,
+              <https://www.rfc-editor.org/rfc/rfc9039.html>.
+
+   [ToIPArch] "Trust over IP (ToIP) Technology Architecture
+              Specification", n.d.,
+              <https://github.com/trustoverip/TechArch/blob/main/
+              spec.md>.
+
 Acknowledgments
 
-   TODO acknowledge.
+   This version of DIDComm builds on [DIDComm2], incubated at DIF, and
+   [DIDComm1], incubated at Hyperledger.  Each of those efforts had many
+   contributors.  Thank you, everyone!  Some portions of the explanatory
+   text in this document is paraphrased or copied from those earlier
+   specs (under their respective Apache 2 licenses).
 
 Author's Address
 
