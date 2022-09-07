@@ -34,7 +34,7 @@ author:
 normative:
   DID:
     target: https://www.w3.org/TR/did-core/
-    title: Decentralized Identifiers (DIDs) v1.0: Core architecture, data model, and representations
+    title: "Decentralized Identifiers (DIDs) v1.0: Core architecture, data model, and representations"
 
 informative:
 
@@ -44,7 +44,7 @@ informative:
 
   DIDComm1:
     target: https://github.com/hyperledger/aries-rfcs/blob/main/concepts/0005-didcomm/README.md
-    title: Aries RFC 0005: DID Communication
+    title: "Aries RFC 0005: DID Communication"
 
   DIDComm2:
     target: https://identity.foundation/didcomm-messaging/spec/
@@ -81,25 +81,9 @@ informative:
     target: https://github.com/msgpack/msgpack/blob/master/spec.md
     title: Msgpack Mapping Object Codes
 
-  BOM:
-    target: https://en.wikipedia.org/wiki/Byte_order_mark
-    title: UTF Byte Order Mark
-
-  DLog:
-    target: https://en.wikipedia.org/wiki/Discrete_logarithm
-    title: Discrete Logarithm Problem
-
   NaCL:
     target: https://nacl.cr.yp.to
     title: NaCl Networking and Cryptography library
-
-  MultiCodec:
-    target: https://github.com/multiformats/multicodec
-    title: MultiCodec Multiformats Codecs
-
-  MCTable:
-    target: https://github.com/multiformats/multicodec/blob/master/table.csv
-    title: MultiCodec Table
 
   IPFS:
     target: https://richardschneider.github.io/net-ipfs-core/api/Ipfs.Registry.HashingAlgorithm.html
@@ -108,22 +92,6 @@ informative:
   Base58Check:
     target: https://en.bitcoin.it/wiki/Base58Check_encoding
     title: Base58Check Encoding
-
-  ASCII:
-    target: https://en.wikipedia.org/wiki/ASCII
-    title: Text Printable ASCII Characters
-
-  UTF8:
-    target: https://en.wikipedia.org/wiki/UTF-8
-    title: "UTF-8 Unicode"
-
-  Latin1:
-    target: https://en.wikipedia.org/wiki/ISO/IEC_8859-1
-    title: "Latin-1 ISO 8859-1"
-
-  STOMP:
-    target: https://stomp.github.io
-    title: Simple Text Oriented Messaging Protocol
 
 --- abstract
 
